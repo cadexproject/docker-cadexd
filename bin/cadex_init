@@ -4,13 +4,13 @@ set -ex
 
 # This shouldn't be in the Dockerfile or containers built from the same image
 # will have the same credentials.
-if [ ! -e "$HOME/.dashcore/dash.conf" ]; then
+if [ ! -e "$HOME/.CADEXCOIN/cadex.conf" ]; then
     mkdir -p $HOME/.dashcore
 
-    echo "Creating dash.conf"
+    echo "Creating cadex.conf"
 
     # Seed a random password for JSON RPC server
-    cat <<EOF > $HOME/.dashcore/dash.conf
+    cat <<EOF > $HOME/.CADEXCOIN/cadex.conf
 testnet=${TESTNET:-0}
 disablewallet=${DISABLEWALLET:-1}
 printtoconsole=${PRINTTOCONSOLE:-1}
@@ -20,6 +20,6 @@ EOF
 
 fi
 
-cat $HOME/.dashcore/dash.conf
+cat $HOME/.CADEXCOIN/cadex.conf
 
 echo "Initialization completed successfully"

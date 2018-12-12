@@ -1,12 +1,12 @@
-Dashd for Docker
+Cadexd for Docker
 ================
 
-[![Docker Stats](http://dockeri.co/image/dashpay/dashd)](https://hub.docker.com/r/dashpay/dashd/)
+[![Docker Stats](http://dockeri.co/image/cadexcoin/cadexd)](https://hub.docker.com/r/cadexcoin/dashd/)
 
-[![Build Status](https://travis-ci.org/dashpay/docker-dashd.svg?branch=master)](https://travis-ci.org/dashpay/docker-dashd/)
+[![Build Status](https://travis-ci.org/cadexproject/docker-cadex.svg?branch=master)](https://travis-ci.org/cadexproject/docker-cadexd/)
 
 
-Docker image that runs the Dash dashd node in a container for easy deployment.
+Docker image that runs the Cadex cadexd node in a container for easy deployment.
 
 
 Requirements
@@ -24,29 +24,29 @@ Really Fast Quick Start
 
 One liner for Ubuntu 14.04 LTS machines with JSON-RPC enabled on localhost and adds upstart init script:
 
-    curl https://raw.githubusercontent.com/dashpay/docker-dashd/master/bootstrap-host.sh | sh -s trusty
+    curl https://raw.githubusercontent.com/cadexproject/docker-cadexd/master/bootstrap-host.sh | sh -s trusty
 
 
 Quick Start
 -----------
 
-1. Create a `dashd-data` volume to persist the dashd blockchain data, should exit immediately.  The `dashd-data` container will store the blockchain when the node container is recreated (software upgrade, reboot, etc):
+1. Create a `cadexd-data` volume to persist the cadexd blockchain data, should exit immediately.  The `cadexd-data` container will store the blockchain when the node container is recreated (software upgrade, reboot, etc):
 
-        docker volume create --name=dashd-data
-        docker run -v dashd-data:/dash --name=dashd-node -d \
-            -p 9999:9999 \
-            -p 127.0.0.1:9998:9998 \
-            dashpay/dashd
+        docker volume create --name=cadexd-data
+        docker run -v cadexd-data:/cadex --name=cadexd-node -d \
+            -p 27270:27270 \
+            -p 127.0.0.1:28280:28280 \
+            cadexproject/cadexd
 
-2. Verify that the container is running and dashd node is downloading the blockchain
+2. Verify that the container is running and cadexd node is downloading the blockchain
 
         $ docker ps
         CONTAINER ID        IMAGE                         COMMAND             CREATED             STATUS              PORTS                                              NAMES
-        d0e1076b2dca        dashpay/dashd:latest          "dash_oneshot"      2 seconds ago       Up 1 seconds        127.0.0.1:9998->9998/tcp, 0.0.0.0:9999->9999/tcp   dashd-node
+        d0e1076b2dca        cadexproject/cadexd:latest          "cadex_oneshot"      2 seconds ago       Up 1 seconds        127.0.0.1:28280->28280/tcp, 0.0.0.0:27270->27270/tcp   cadexd-node
 
 3. You can then access the daemon's output thanks to the [docker logs command]( https://docs.docker.com/reference/commandline/cli/#logs)
 
-        docker logs -f dashd-node
+        docker logs -f cadexd-node
 
 4. Install optional init scripts for upstart and systemd are in the `init` directory.
 
@@ -56,11 +56,11 @@ Documentation
 
 * To run in testnet, add environment variable `TESTNET=1` to `docker run` as such:
 
-        docker run -v dashd-data:/dash --name=dashd-node -d \
+        docker run -v cadexd-data:/cadex --name=cadexd-node -d \
             --env TESTNET=1 \
-            -p 9999:9999 \
-            -p 127.0.0.1:9998:9998 \
-            dashpay/dashd
+            -p 27270:27270 \
+            -p 127.0.0.1:28280:28280 \
+            cadexproject/cadexd
 
 * Additional documentation in the [docs folder](docs).
 
@@ -68,5 +68,5 @@ Credits
 -------
 
 Original work by Kyle Manna [https://github.com/kylemanna/docker-bitcoind](https://github.com/kylemanna/docker-bitcoind).
-Modified to use Dash Core instead of Bitcoin Core.
+Modified to use Dash Core instead of Bitcoin Core. Cadex coin forked from dash repo, credit to dash.
 

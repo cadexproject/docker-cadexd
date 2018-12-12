@@ -4,7 +4,7 @@
 #
 set -ex
 
-DASH_IMAGE=${DASH_IMAGE:-dashpay/dashd}
+CADEX_IMAGE=${CADEX_IMAGE:-cadexproject/cadexd}
 
 distro=$1
 shift
@@ -35,23 +35,23 @@ if [ "$distro" = "trusty" -o "$distro" = "ubuntu:14.04" ]; then
 fi
 
 # Always clean-up, but fail successfully
-docker kill dashd-node 2>/dev/null || true
-docker rm dashd-node 2>/dev/null || true
-stop docker-dashd 2>/dev/null || true
+docker kill cadexd-node 2>/dev/null || true
+docker rm cadexd-node 2>/dev/null || true
+stop docker-cadexd 2>/dev/null || true
 
 # Always pull remote images to avoid caching issues
-if [ -z "${DASH_IMAGE##*/*}" ]; then
-    docker pull $DASH_IMAGE
+if [ -z "${CADEX_IMAGE##*/*}" ]; then
+    docker pull $CADEX_IMAGE
 fi
 
 # Initialize the data container
-docker volume create --name=dashd-data
-docker run -v dashd-data:/dash --rm $DASH_IMAGE dash_init
+docker volume create --name=cadexd-data
+docker run -v cadexd-data:/cadex --rm $CADEX_IMAGE cadex_init
 
-# Start dashd via upstart and docker
-curl https://raw.githubusercontent.com/dashpay/docker-dashd/master/upstart.init > /etc/init/docker-dashd.conf
-start docker-dashd
+# Start cadexd via upstart and docker
+curl https://raw.githubusercontent.com/cadexproject/docker-cadexd/master/upstart.init > /etc/init/docker-cadexd.conf
+start docker-cadexd
 
 set +ex
-echo "Resulting dash.conf:"
-docker run -v dashd-data:/dash --rm $DASH_IMAGE cat /dash/.dashcore/dash.conf
+echo "Resulting cadex.conf:"
+docker run -v cadexd-data:/cadex --rm $CADEX_IMAGE cat /cadex/.CADEXCOIN/cadex.conf
